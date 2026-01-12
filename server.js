@@ -9,9 +9,12 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: "*" }
 });
-
+try{
 mongoose.connect("mongodb+srv://RdConclave26:RdConclave%402026%23@rdconclave.5mu2koe.mongodb.net/RDConclave?retryWrites=true&w=majority");
-
+console.log(connected);
+}catch(err){
+    console.log(err);
+}
 app.get("/reset", async (req, res) => {
   await Hackathon.findOneAndUpdate(
     {},
