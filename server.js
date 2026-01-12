@@ -11,7 +11,7 @@ const io = new Server(server, {
 });
 try{
 mongoose.connect("mongodb+srv://RdConclave26:RdConclave%402026%23@rdconclave.5mu2koe.mongodb.net/RDConclave?retryWrites=true&w=majority");
-console.log(connected);
+console.log("connected");
 }catch(err){
     console.log(err);
 }
