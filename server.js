@@ -51,6 +51,34 @@ io.on("connection", async (socket) => {
   });
 });
 
+app.get("/reset/:branch", async (req, res) => {
+  const { branch } = req.params; // it or cse
+
+  if (!branch) {
+    return res.status(400).json({ success: false, message: "Branch required" });
+  }
+
+  await Hackathon.findOneAndUpdate(
+    { branch },
+    {
+      status: "WAITING",
+      startTime: null
+    },
+    { upsert: true }
+  );
+
+  // notify only that branch
+  io.to(branch).emit("RESET_EVENT");
+
+  console.log(`Reset done for ${branch}`);
+
+  res.json({
+    success: true,
+    message: `Hackathon reset for ${branch}`
+  });
+});
+
+
 server.listen(5000, () => {
   console.log("Server running on port 5000");
 });
