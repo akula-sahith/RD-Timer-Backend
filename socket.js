@@ -1,11 +1,15 @@
 import { io } from "socket.io-client";
 
-const socket = io("https://rd-timer-backend.onrender.com", {
-  transports: ["websocket"],   // force WebSocket
-  reconnection: true,
-  reconnectionAttempts: Infinity,
-  reconnectionDelay: 1000,
-  timeout: 20000
+io.on("connection", (socket) => {
+  socket.on("join-room", (branch) => {
+    socket.join(branch);
+    console.log(`Joined ${branch}`);
+  });
+
+  socket.on("start-timer", async ({ branch }) => {
+    // create/update timer document for that branch
+    io.to(branch).emit("timer-update", { branch });
+  });
 });
 
 export default socket;
